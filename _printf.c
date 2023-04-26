@@ -9,11 +9,13 @@
 int _printf(const char *format, ...)
 {
 	va_list vlist;
-	char buffer[1024];
+	char buffer[BUFF_SIZE];
 	int i = 0, j = 0, temp = 0, counter = 0;
 	conv_t specs[] = {
 		{"c", check_c}, {"s", check_s}, {"%", check_percent}, {"i", check_d},
-		{"d", check_d},	{"\0", NULL}
+		{"d", check_d}, {"b", check_b}, {"o", check_o}, {"u", check_u},
+		{"x", check_x}, {"X", check_hX}, {"R", check_R13}, {"r", check_r},
+		{"\0", NULL}
 	};
 
 	if (!format)
