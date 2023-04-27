@@ -1,52 +1,43 @@
 #include "main.h"
-
 /**
- * _printf - produces output according to a format
- * @format: character string
- * Return: number of characters printed
+ * _printf - printf function
+ * @format: const char pointer
+ * Return: b_len
  */
-
 int _printf(const char *format, ...)
 {
-	va_list vlist;
-	char buffer[BUFF_SIZE];
-	int i = 0, j = 0, temp = 0, counter = 0;
-	conv_t specs[] = {
-		{"c", check_c}, {"s", check_s}, {"%", check_percent}, {"i", check_d},
-		{"d", check_d}, {"b", check_b}, {"o", check_o}, {"u", check_u},
-		{"x", check_x}, {"X", check_hX}, {"R", check_R13}, {"r", check_r},
-		{"\0", NULL}
-	};
+	int (*pfunc)(va_list, flags_t *);
+	const char *p;
+	va_list arguments;
+	flags_t flags = {0, 0, 0};
 
-	if (!format)
+	register int count = 0;
+
+	va_start(arguments, format);
+	if (!format || (format[0] == '%' && !format[1]))
 		return (-1);
-	va_start(vlist, format);
-	while (format && format[i] != '\0')
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = format; *p; p++)
 	{
-		if (format[i] == '%')
+		if (*p == '%')
 		{
-			i++, temp = counter;
-			for (j = 0; specs[j].dt != NULL; j++)
+			p++;
+			if (*p == '%')
 			{
-				if (format[i] == '\0')
-					break;
-				if (format == specs[j].dt)
-				{
-					counter = specs[j].f(buffer, vlist, counter);
-					break;
-				}
+				count += _putchar('%');
+				continue;
 			}
-			if (counter == temp && format[i])
-				i--, buffer[counter] = format[i], counter++;
-		}
-		else
-			buffer[counter] = format[i], counter++;
-		i++;
+			while (get_flap(*p, &flags))
+				p++;
+			pfunc = get_print(*p);
+			count += (pfunc)
+				? pfunc(arguments, &flags)
+				: _printf("%%%c", *p);
+		} else
+			count += _putchar(*p);
 	}
-	va_end(vlist);
-	buffer[counter] = '\0';
-	handle_print(buffer, counter);
-	return (counter);
-
+	_putchar(-1);
+	va_end(arguments);
+	return (count);
 }
-
