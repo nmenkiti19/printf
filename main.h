@@ -17,21 +17,21 @@
 typedef struct conv
 {
 	char *dt;
-	int (*f)(char *, va_list, int);
+	int (*f)(va_list);
 } conv_t;
 
 int _printf(const char *format, ...);
-int check_c(char *buffer, va_list vlist, int counter);
-int check_s(char *buffer, va_list vlist, int counter);
-int check_d(char *buffer, va_list vlist, int counter);
-int check_percent(char *buffer, va_list vlist, int counter);
-int check_b(char *buffer, va_list vlist, int counter);
-int check_o(char *buffer, va_list vlist, int counter);
-int check_x(char *buffer, va_list vlist, int counter);
-int check_hX(char *buffer, va_list vlist, int counter);
-int check_u(char *buffer, va_list vlist, int counter);
-int check_R13(char *buffer, va_list vlist, int counter);
-int check_r(char *buffer, va_list vlist, int counter);
+int check_c(va_list vlist);
+int check_s(va_list vlist);
+int check_d(va_list vlist);
+int check_b(va_list vlist);
+int check_o(va_list vlist);
+int check_x(va_list vlist);
+int check_hX(va_list vlist);
+int check_u(va_list vlist);
+int check_R13(va_list vlist);
+int check_r(va_list vlist);
+int check_p(va_list vlist);
 
-int handle_print(char *buffer, unsigned int buffer_counter);
+int handle_print(char input);
 #endif

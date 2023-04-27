@@ -1,52 +1,84 @@
 #include "main.h"
+int (*find_format(const char *format))(va_list);
 
 /**
- * _printf - produces output according to a format
- * @format: character string
- * Return: number of characters printed
+ * find_format - checks if there is a valid format specifier
+ * @format: possible valid format specifier
+ * Return: pointer to valid function or NULL
  */
+int (*find_format(const char *format))(va_list)
+{
+	int i = 0;
+	conv_t specs[] = {
+		{"c", check_c},
+		{"s", check_s},
+		{"i", check_d},
+		{"d", check_d},
+		{"b", check_b},
+		{"u", check_u},
+		{"o", check_o},
+		{"x", check_x},
+		{"X", check_hX},
+		{"p", check_p},
+		/*{"S", check_S},*/
+		{"r", check_r},
+		{"R", check_R13},
+		{NULL, NULL}
+	};
 
+	for (; specs[i].dt != NULL; i++)
+	{
+		if (*(specs[i].dt) == *format)
+			break;
+	}
+	return (specs[i].f);
+}
+
+/**
+ * _printf - function for format printing
+ * @format: list of arguments to printing
+ * Return: Number of characters to printing
+ */
 int _printf(const char *format, ...)
 {
 	va_list vlist;
-	char buffer[BUFF_SIZE];
-	int i = 0, j = 0, temp = 0, counter = 0;
-	conv_t specs[] = {
-		{"c", check_c}, {"s", check_s}, {"%", check_percent}, {"i", check_d},
-		{"d", check_d}, {"b", check_b}, {"o", check_o}, {"u", check_u},
-		{"x", check_x}, {"X", check_hX}, {"R", check_R13}, {"r", check_r},
-		{"\0", NULL}
-	};
+	int (*f)(va_list);
+	unsigned int i = 0, indx = 0;
 
-	if (!format)
+	if (format == NULL)
 		return (-1);
+
 	va_start(vlist, format);
-	while (format && format[i] != '\0')
+	while (format && format[i])
 	{
-		if (format[i] == '%')
+		if (format[i] != '%')
 		{
-			i++, temp = counter;
-			for (j = 0; specs[j].dt != NULL; j++)
-			{
-				if (format[i] == '\0')
-					break;
-				if (format == specs[j].dt)
-				{
-					counter = specs[j].f(buffer, vlist, counter);
-					break;
-				}
-			}
-			if (counter == temp && format[i])
-				i--, buffer[counter] = format[i], counter++;
+			handle_print(format[i]);
+			indx++;
+			i++;
+			continue;
 		}
 		else
-			buffer[counter] = format[i], counter++;
+		{
+			if (format[i + 1] == '%')
+			{
+				handle_print('%');
+				indx++;
+				i += 2;
+				continue;
+			}
+			else
+			{
+				f = find_format(&format[i + 1]);
+				if (f == NULL)
+					return (-1);
+				i += 2;
+				indx += f(vlist);
+				continue;
+			}
+		}
 		i++;
 	}
 	va_end(vlist);
-	buffer[counter] = '\0';
-	handle_print(buffer, counter);
-	return (counter);
-
+	return (indx);
 }
-

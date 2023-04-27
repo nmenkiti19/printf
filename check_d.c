@@ -2,45 +2,36 @@
 
 /**
  * check_d - to check d and i specifiers
- * @buffer: buffer
  * @vlist: list of arguments
- * @counter: counter
- * Return: counter
+ * Return: returns counter
  */
-int check_d(char *buffer, va_list vlist, int counter)
+int check_d(va_list vlist)
 {
-	int dec = 1;
-	unsigned int temp;
-	int sum;
+	int a[10];
+	int i = 1, msb = 1000000000, num, sum = 0, counter = 0;
 
-	sum = va_arg(vlist, int);
-
-	if (sum < 0)
+	num = va_arg(vlist, int);
+	if (num < 0)
 	{
-		buffer[counter] = '-';
-		sum *= -1;
+		num *= -1;
+		handle_print('-');
 		counter++;
 	}
-	temp = sum;
-
-	if (sum == INT_MIN)
-		temp++;
-
-	while (temp > 9)
+	a[0] = num / msb;
+	for (; i < 10; i++)
 	{
-		dec *= 10;
-		temp /= 10;
+		msb /= 10;
+		a[i] = (num / msb) % 10;
 	}
-
-	temp = sum;
-	while (dec > 0)
+	for (i = 0; i < 10; i++)
 	{
-		buffer[counter] = ('0' + temp / dec);
-		temp %= dec;
-		dec /= 10;
-		counter++;
+		sum += a[i];
+		if (sum != 0 || i == 9)
+		{
+			handle_print('0' + a[i]);
+			counter++;
+		}
 	}
-
 	return (counter);
 }
 

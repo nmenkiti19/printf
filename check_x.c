@@ -2,32 +2,35 @@
 
 /**
  * check_x - handle %x
- * @buffer: buffer
  * @vlist: list of args
- * @counter: counter
  * Return: returns counter position
  */
-int check_x(char *buffer, va_list vlist, int counter)
+int check_x(va_list vlist)
 {
-	unsigned int sum = va_arg(vlist, unsigned int);
-	unsigned int temp = sum;
-	int hex = 1;
+	unsigned int a[8];
+	unsigned int i = 1, msb = 268435456, num, sum = 0;
+	char sub;
+	int counter = 0;
 
-	while (temp > 15)
+	num = va_arg(vlist, unsigned int);
+	sub = 'a' - ':';
+	a[0] = num / msb;
+	for (; i < 8; i++)
 	{
-		hex *= 16;
-		temp /= 16;
+		msb /= 16;
+		a[i] = (num / msb) % 16;
 	}
-
-	temp = sum;
-	while (hex > 0)
+	for (i = 0; i < 8; i++)
 	{
-		buffer[counter] = (temp / hex < 9) ?
-			(temp / hex + '0') : ('a' + temp / hex - 10);
-		temp %= hex;
-		hex /= 16;
-		counter++;
+		sum += a[i];
+		if (sum || i == 7)
+		{
+			if (a[i] < 10)
+				handle_print('0' + a[i]);
+			else
+				handle_print('0' + sub + a[i]);
+			counter++;
+		}
 	}
-
 	return (counter);
 }

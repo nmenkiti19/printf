@@ -2,31 +2,30 @@
 
 /**
  * check_o - handle %o
- * @buffer: buffer
- * @vlist: list of args
- * @counter: counter
+ * @vlist: list of arguments
  * Return: returns counter position
  */
-int check_o(char *buffer, va_list vlist, int counter)
+int check_o(va_list vlist)
 {
-	unsigned int sum = va_arg(vlist, unsigned int);
-	unsigned int temp = sum;
-	int oct = 1;
+	unsigned int a[11];
+	unsigned int i = 1, msb = 1073741824, num, sum = 0;
+	int counter;
 
-	while (temp > 7)
+	num = va_arg(vlist, unsigned int);
+	a[0] = num / msb;
+	for (; i < 11; i++)
 	{
-		oct *= 8;
-		temp /= 8;
+		msb /= 8;
+		a[i] = (num / msb) % 8;
 	}
-
-	temp = sum;
-	while (oct > 0)
+	for (i = 0; i < 11; i++)
 	{
-		buffer[counter] = ('0' + temp / oct);
-		temp %= oct;
-		oct /= 8;
-		counter++;
+		sum += a[i];
+		if (sum || i == 10)
+		{
+			handle_print('0' + a[i]);
+			counter++;
+		}
 	}
-
 	return (counter);
 }
