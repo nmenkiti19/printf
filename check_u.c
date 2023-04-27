@@ -2,35 +2,31 @@
 
 /**
  * check_u - handle %u
- * @buffer: buffer
  * @vlist: list of args
- * @counter: counter
  * Return: return counter
  */
-int check_u(char *buffer, va_list vlist, int counter)
+int check_u(va_list vlist)
 {
-	int dec = 1;
-	unsigned int temp;
-	unsigned int sum;
+	unsigned int a[10];
+	unsigned int i = 1, msb = 1000000000, num, sum = 0;
+	int counter = 0;
 
-	sum = va_arg(vlist, unsigned int);
+	num = va_arg(vlist, unsigned int);
 
-	temp = sum;
-
-	while (temp > 9)
+	a[0] = num / msb;
+	for (; i < 10; i++)
 	{
-		dec *= 10;
-		temp /= 10;
+		msb /= 10;
+		a[i] = (num / msb) % 10;
 	}
-
-	temp = sum;
-	while (dec > 0)
+	for (i = 0; i < 10; i++)
 	{
-		buffer[counter] = ('0' + temp / dec);
-		temp %= dec;
-		dec /= 10;
-		counter++;
+		sum += a[i];
+		if (sum || i == 9)
+		{
+			handle_print('0' + a[i]);
+			counter++;
+		}
 	}
-
 	return (counter);
 }

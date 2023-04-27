@@ -2,31 +2,22 @@
 
 /**
  * check_s - check string
- * @buffer: buffer
  * @vlist: list of args
- * @counter: counter
- * Return: returns count of string
+ * Return: returns count
  */
-int check_s(char *buffer, va_list vlist, int counter)
+int check_s(va_list vlist)
 {
-	char *string;
+	char *input;
 	int i = 0;
 
-	string = va_arg(vlist, char *);
-	if (string == NULL)
-		string = "(null)";
+	input = va_arg(vlist, char *);
 
-	if (string[0] == '\0')
-	{
-		buffer[counter] = '\0';
-		counter++;
-	}
+	if (input == NULL)
+		input = "(null)";
 
-	while (string[i] != '\0')
+	while (input[i])
 	{
-		buffer[counter] = string[i];
-		i++;
-		counter++;
+		handle_print(input[i++]);
 	}
-	return (counter);
+	return (i);
 }

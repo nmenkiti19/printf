@@ -1,28 +1,23 @@
 #include "main.h"
 /**
  * check_r - handle %r to reverse
- * @buffer: buffer
  * @vlist: list of args
- * @counter: counter position
  * Return: returns counter position
  */
-int check_r(char *buffer, va_list vlist, int counter)
+int check_r(va_list vlist)
 {
-	int i = 0;
+	int i = 0, counter = 0;
 	char *characters;
 
 	characters = va_arg(vlist, char *);
-	if (characters)
+	if (characters == NULL)
+		characters = ")llun(";
+	while (characters[i])
+		i++;
+	for (i -= 1; i >= 0; i--)
 	{
-		while (characters[i] != '\0')
-			i++;
-		i = i - 1;
-		while (i >= 0)
-		{
-			buffer[counter] = characters[i];
-			counter++;
-			i--;
-		}
+		handle_print(characters[i]);
+		counter++;
 	}
 	return (counter);
 }

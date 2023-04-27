@@ -2,32 +2,36 @@
 
 /**
  * check_R13 - handle %R for rot13
- * @buffer: buffer
  * @vlist: list of args
- * @counter: counter position
  * Return: return counter positionx
  */
-int check_R13(char *buffer, va_list vlist, int counter)
+int check_R13(va_list vlist)
 {
-	char *characters;
-	char *alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char *otheralphabet = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
-	int i, j = 0;
+	char *str;
+	unsigned int i = 0, j = 0;
+	int counter = 0;
+	char in[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	char out[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	characters = va_arg(vlist, char *);
-	while (characters[j])
+	str = va_arg(vlist, char *);
+	if (str == NULL)
+		str = "(ahyy)";
+	for (; str[i]; i++)
 	{
-		for (i = 0; alphabets[i]; i++)
+		for (j = 0; in[j]; j++)
 		{
-			if (characters[j] == alphabets[i])
+			if (in[j] == str[i])
 			{
-				buffer[counter] = otheralphabet[i];
+				handle_print(out[j]);
+				counter++;
 				break;
 			}
-			buffer[counter] = characters[j];
 		}
-		j++, counter++;
+		if (!in[j])
+		{
+			handle_print(str[i]);
+			counter++;
+		}
 	}
-
 	return (counter);
 }
