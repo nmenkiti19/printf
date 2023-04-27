@@ -30,7 +30,7 @@ int _printf(const char *format, ...)
 			{
 				if (format[i] == '\0')
 					break;
-				if (format == specs[j].dt)
+				if (*format == *(specs[j].dt))
 				{
 					counter = specs[j].f(buffer, vlist, counter);
 					break;
