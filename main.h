@@ -38,6 +38,7 @@ int print_binary(va_list l, flags_t *f);
 int print_octal(va_list l, flags_t *f);
 char *convert(unsigned long int num, int base, int lowercase);
 int _printf(const char *format, ...);
+
 int (*get_print(char s))(va_list, flags_t *);
 int get_flag(char s, flags_t *f);
 int print_string(va_list l, flags_t *f);
@@ -49,4 +50,7 @@ int print_rev(va_list l, flags_t *f);
 int print_bigS(va_list l, flags_t *f);
 int print_address(va_list l, flags_t *f);
 int print_percent(va_list l, flags_t *f);
+
+int handle_print(char input);
+
 #endif

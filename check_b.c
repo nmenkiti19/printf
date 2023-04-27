@@ -2,31 +2,31 @@
 
 /**
  * check_b - handle %b
- * @buffer: buffer
  * @vlist: list of args
- * @counter: counter position
  * Return: retuns counter position
  */
-int check_b(char *buffer, va_list vlist, int counter)
+int check_b(va_list vlist)
 {
-	unsigned int sum = va_arg(vlist, unsigned int);
-	unsigned int temp = sum;
-	int bin = 1;
+	unsigned int num, msb = 2147483648, i = 1, sum = 0;
+	unsigned int a[32];
+	int counter = 0;
 
-	while (temp > 1)
+	num = va_arg(vlist, unsigned int);
+	a[0] = num / msb;
+
+	for (; i < 32; i++)
 	{
-		bin *= 2;
-		temp /= 2;
+		msb /= 2;
+		a[i] = (num / msb) % 2;
 	}
-
-	temp = sum;
-	while (bin > 0)
+	for (i = 0; i < 32; i++)
 	{
-		buffer[counter] = ('0' + temp / bin);
-		temp %= bin;
-		bin /= 2;
-		counter++;
+		sum += a[i];
+		if (sum || i == 31)
+		{
+			handle_print('0' + a[i]);
+			counter++;
+		}
 	}
-
 	return (counter);
 }

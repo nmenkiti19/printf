@@ -2,11 +2,10 @@
 
 /**
  * handle_print - prints buffer characters
- * @buffer: pointer
- * @buffer_size: buffer size
+ * @input: input to be printed
  * Return: characters printed
  */
-int handle_print(char *buffer, unsigned int buffer_size)
+int handle_print(char input)
 {
-	return (write(1, buffer, buffer_size));
+	return (write(1, &input, 1));
 }
