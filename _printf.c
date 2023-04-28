@@ -1,6 +1,5 @@
 #include "main.h"
 int (*find_format(const char *format))(va_list);
-int check_space(va_list vlist);
 
 /**
  * find_format - checks if there is a valid format specifier
@@ -24,8 +23,6 @@ int (*find_format(const char *format))(va_list)
 		{"S", check_S},
 		{"r", check_r},
 		{"R", check_R13},
-		{" ", check_space},
-		{"\0", NULL},
 		{NULL, NULL}
 	};
 
@@ -35,17 +32,6 @@ int (*find_format(const char *format))(va_list)
 			break;
 	}
 	return (specs[i].f);
-}
-
-/**
- *  * check_space - check space
- *   * @format: space
- * Return: return 1
- */
-int check_space(va_list vlist)
-{
-		(void)vlist;
-			return (1);
 }
 
 /**
