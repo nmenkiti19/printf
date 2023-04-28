@@ -67,9 +67,7 @@ _printf("Hello %s", "world");
 Prints string "Hello world"
 
 _printf("They call me mad, but one day when history of France is written, they \
-will mark my name well ...%s ", "Sidney Applebaum")
-
-.RE
+will mark my name well ...%s ", "Sidney Applebaum"RE
 
 .SS Return Value
 Upon success, these main function will return the number of characters printed.
@@ -85,4 +83,4 @@ Upon success, these main function will return the number of characters printed.
 Memory issues are known to frequent this function. User beware.
 
 .SH "AUTHOR(S)"
-KELECHUKWU FAVOUR and NGOZI MENKITI
+KELECHUKWU FAVOUR
