@@ -32,6 +32,6 @@ int check_u(va_list vlist);
 int check_R13(va_list vlist);
 int check_r(va_list vlist);
 int check_p(va_list vlist);
-
+int check_S(va_list vlist);
 int handle_print(char input);
 #endif

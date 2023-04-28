@@ -20,7 +20,7 @@ int (*find_format(const char *format))(va_list)
 		{"x", check_x},
 		{"X", check_hX},
 		{"p", check_p},
-		/*{"S", check_S},*/
+		{"S", check_S},
 		{"r", check_r},
 		{"R", check_R13},
 		{NULL, NULL}
